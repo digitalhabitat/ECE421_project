@@ -1,7 +1,7 @@
 # ECE421_project
+![image](https://raw.githubusercontent.com/digitalhabitat/ECE421_project/master/images/gameplay.gif)
 ## DODGE POKÉBALL
-
-**Final Project Report**
+### Final Project Report 
 
 By
 
@@ -17,11 +17,11 @@ Department of Electrical and Computer Engineering
 
 Dr. Lauren Christopher
 
-lauchris@iupui.edu
+lauchris<span></span>@iupui.edu
 
 November 28, 2018
 
-**PROJECT PLAN**
+### PROJECT PLAN
 
 The goal of the project is to implement a dodgeball game. A single player will move a sprite along a xy-coordinate space within the display. The movements will be controlled by the 4 push-buttons on the ZedBoard. The object of the game will be to avoid collisions with any moving sprites. The progression of difficulty will be determined by a timekeeper at the start of the game. The longer the player avoids colliding with a sprite the more sprites that will be spawned. Possible extended features would be to emulate a game mechanic similar to asteroids where the player would have the ability to shoot projectiles that would remove the sprites.
 
@@ -55,7 +55,7 @@ The required materials are as follow:
 | 7 | Finalize Documentation and Final Project | Nov 21 – 24 | Both |
 | 8 | Week Long Buffer for Unexpected Delays and Challenges | Nov 25 – Dec 1 | Both |
 
-Table 1: Project Schedule with Milestone
+*Table 1: Project Schedule with Milestone*
 
 **1.4 Previous Works**
 
@@ -63,7 +63,7 @@ This project is similar to a Dodgeball game in the link below. In the game below
 
 [https://www.youtube.com/watch?v=QqBx70wp1Wc&amp;app=desktop](https://www.youtube.com/watch?v=QqBx70wp1Wc&amp;app=desktop)
 
-**THE GAME**
+### THE GAME
 
 The name of our game is called &quot;Dodge Pokèball.&quot; The title pretty much describes the game. In this game, the player controls Pikachu using the ZedBoard push buttons. The task of the player is to avoid getting hit by the Pokèballs.
 
@@ -79,20 +79,23 @@ The difficulty of the game is determined by the length of time the player can su
 
 To make our game fun and livelier, everything in the interface is animated. The game takes place in an arena which has time and lives indicator. The Pokèballs are spinning and the Pikachu is not just a still picture but an alive Pikachu.
 
-**WORK ACCOMPLISHED**
+### WORK ACCOMPLISHED
 
 **3.1 Project Overview**
 
 Figure 1 shows the project design and how it works. When we run the code, the game goes to the main menu. The main menu tells the user to press any button to play the game. Once the user hits the button, variables are assigned for a new game and the game starts. The game-play exist inside a while loop to read for button presses, modify data points, and display new sprite positions. Once the player loses all their lives the program exits the while loop and displays a game over message, till the user presses a button to return to the main menu.
 
+![image](https://raw.githubusercontent.com/digitalhabitat/ECE421_project/master/images/figure_1.png)
 
-Figure 1: C Program Design Diagram
+*Figure 1: C Program Design Diagram*
 
 **3.2 Block Diagram and Port Map**
 
 First, we create a block diagram (Figure 2) in Vivado to enable push buttons, switches, LEDs, and HDMI port. The next thing we did after creating a block diagram is figuring out the corresponding ports. The lab 7 constraints (.xdc) file was used for the port mapping. The pin that connected to the reset\_rtl was originally mapped to the down push button. This is the only constraint that was edited to a different unused push button pin. I main idea behind using a block design allows us to integrate previous labs as an IP block. With this level of abstraction we can easily add a processor core and bus to our IP block. Then in the SDK we can write a program that the Zynq processor will execute and access GPIO and Lab 7 IP block and memory.
 
-Figure 2: Block Diagram
+![image](https://raw.githubusercontent.com/digitalhabitat/ECE421_project/master/images/figure_2.png)
+
+*Figure 2: Block Diagram*
 
 This code below enables the switches, push buttons, and the LEDs. The push buttons and switches are psb\_check and dip\_check. The last line of this code syncs the push button and Pikachu&#39;s movements.
 
@@ -222,8 +225,9 @@ unsigned char data_table[] = {
 		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 ```
+![image](https://raw.githubusercontent.com/digitalhabitat/ECE421_project/master/images/figure_3.png)
 
-Figure 3: Displaying Text Example
+*Figure 3: Displaying Text Example*
 
 **3.4 Displaying Animated Sprites**
 
@@ -231,7 +235,9 @@ We have a total of 13 sprites for our game. The purpose of having multiple sprit
 
 We have a separate header (.h) file for our sprite. To get a single sprite, we convert from a (.png) file to hexadecimal using the website below and then we convert from hexadecimal to decimal RGB color.  The image files (.png) where created using Microsoft Paint and likeness based on the Gameboy game Pokémon. We are limited to 7 colors since we use 3-bit to control the RGB values from fully on to fully off. Figure 3 is an example of Pikachu sprite when it is facing front. The numbers indicate different colors. In this case, number 7 is white, 6 is yellow, 4 is red, and 0 is black. When the Pikachu is moving left, right, up, or down, we have a different bitmap. Each bitmap has a different width and heights. It is important that we declare the width and height in the header file because we use the same command for every other sprite.
 
-Figure 4: Pikachu Bitmap and the Original Image
+![image](https://raw.githubusercontent.com/digitalhabitat/ECE421_project/master/images/figure_4.png)
+
+*Figure 4: Pikachu Bitmap and the Original Image*
 
 [http://www.digole.com/tools/PicturetoC\_Hex\_converter.php](http://www.digole.com/tools/PicturetoC_Hex_converter.php)
 
@@ -326,7 +332,9 @@ One of the most challenging processes was erasing and replacing the background p
 
 The process that we went through was to remember the previous position of the sprite and replace it with the exact bitmap elements of the background. As mentioned in 2.3, our background picture is 320x240 pixels and the screen resolution is 640x480 pixel. When we enlarge the background, the position the first occluded background bitmap element cannot be directly determined with the original xy-position of the sprite. Figure 4 below describes how we mapped previous screen prints, from sprites on the background so that their traces are replaced properly. The main idea is to offset the array containing the bitmap of the background to the first element (pixel) previously covered by a sprite. This is done by multiplying the width of the background bitmap (w1) with the y-position divided by the scale and adding the x-position divided by the scale. (Y-position and x-position are from the sprite that was previously printed on the screen). The set\_block is used to print the pixels of the bitmap back on the screen. Two for loop are used to iterate the pixel positions.
 
-Figure 5: Illustration of replace\_bitmap Function
+![image](https://raw.githubusercontent.com/digitalhabitat/ECE421_project/master/images/figure_5.png)
+
+*Figure 5: Illustration of replace\_bitmap Function*
 
 In the code below, replace\_bitmap is the function we made to redraw sections of the original background.
 
@@ -366,7 +374,9 @@ if ((ball->xpos_next>=ball->xpos)&(ball->ypos_next>=ball->ypos) ) {
 
 When the pokèballs hit either the border or the sprite, they bounce 90° from the previous direction. There are conditions when they hit the user-controlled sprite which can be seen in Figure 5. When any of the pokèball hits the Pikachu, the player loses one life. The player has a total of six lives.
 
-Figure 6: Possible Collision Direction of Sprites Diagram
+![image](https://raw.githubusercontent.com/digitalhabitat/ECE421_project/master/images/figure_6.png)
+
+*Figure 6: Possible Collision Direction of Sprites Diagram*
 
 ```c
 // pikachu collisions
@@ -388,25 +398,31 @@ Figure 6: Possible Collision Direction of Sprites Diagram
 
 The above code is an example of Pikachu&#39;s collision with the pokèball when the ball moves right and downward. In this specific case, we define two possible outcomes. It either hits the top or the left side of the sprite. The figure below illustrates how we define the full range of ball collisions.
 
-Figure 7: Range of All Ball Collisions
+![image](https://raw.githubusercontent.com/digitalhabitat/ECE421_project/master/images/figure_7.png)
+
+*Figure 7: Range of All Ball Collisions*
 
 **3.8 Words on Screen**
 
 A few words are used at the beginning and the end of our game. To print out characters, we use the C-code, SomeSimpleBitMapFont.c, provided by the instructor. The code below functions very similar to the way we draw our sprites, in fact, the design of the function, draw\_sprite was based on the functions used to draw words on the screen. Although it structured a little different the principles are still the same. The only difference is that each character has an associated offset in the bitmap table. A table look-up must first occur to determine this offset for a specific character then proceed with printing the bitmap with the selected offset. Only two functions are used to perform these actions as seen below, along with the data\_table array that represents the bitmap.
 
-Figure 8: Displaying Text Example
+![image](https://raw.githubusercontent.com/digitalhabitat/ECE421_project/master/images/figure_3.png)
+
+*Figure 3: Displaying Text Example*
 
 **3.9 Time on Screen**
 
 We use the clock for determining the difficulty level in our game. Since we have limited time for presentation, the difficulty rate is faster. However, it can easily be changed. For the project presentation, an additional pokèballs appears every two seconds starting from zero. The sec\_count in the figure below contains the time elapsed since the start of a new game. To show the time in three digits seconds, we used modulo. This operation allows us to extract the 3 decimal digits from 000 to 999. To show it on the screen, we used print\_pos again.
 
-**RESULT**
+### RESULT
 
 **4.1 Results**
 
 What we learned from this project is how displaying data on the screen affects the performance of the game. This influence many games design choices to ensure that the game runs smoothly. The main principle was to keep sprite data as small as possible and to use set\_block in an efficient way since it was being used to display pixel elements for all our sprites. One way to improve sprite display speed might be storing the sprite data on memory blocks in the FPGA design. This could allow us to right up to 9-pixel elements of a sprite in fewer clock cycles. There are probably some other software functions that could be optimized in hardware, but it since the game appears to be running smoothly we decided it would not be necessary.
 
-Figure 9: Project Summary
+![image](https://raw.githubusercontent.com/digitalhabitat/ECE421_project/master/images/figure_9.png)
+
+*Figure 9: Project Summary*
 
 **4.2 Time Log**
 
@@ -414,7 +430,7 @@ We created a time log to compare our actual work with our milestone. We were abl
 
 Table 2: Time Log
 
-**LIMITATION AND RECOMMENDATION FOR FUTURE WORK**
+### LIMITATIONS AND RECOMMENDATION FOR FUTURE WORK
 
 After playing sometimes, we realized that this game could be very addicting. However, this can still be improved in a lot of aspects. Since we only had a limited amount of time we focused on completing our original plan.
 
@@ -440,7 +456,7 @@ The game could implement a function to save the players initials and high score 
 
 Since there is no similar game to this on the internet as of this moment, and considering how addicting it can get, we believe that this game can be a popular stress relieving game for mobile phones with appropriate modifications.
 
-**APPENDICES**
+### APPENDICES
 
 List of online resources used for image generation and referencing Pokémon game art likeness
 
